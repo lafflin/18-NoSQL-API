@@ -1,6 +1,6 @@
 const db = require("./config/connection");
 const express = require("express");
-const routes = require("./controllers");
+const routes = require("./routes");
 const mongoose = require("mongoose");
 
 mongoose.set("debug", true);
