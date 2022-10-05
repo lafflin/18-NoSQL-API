@@ -4,31 +4,12 @@ const {
 	getAllUsers,
 	getUserById,
 	createUser,
+	editUser,
+	deleteUser,
 } = require("../../controller/userController");
 
-router.get("/", async (req, res) => {
-	try {
-		// not sure if i need to pass something into the func to make it work
-		getAllUsers();
-	} catch (error) {
-		res.status(500).json({ error });
-	}
-});
+router.route("/").get(getAllUsers).post(createUser);
 
-router.get("/:id", (req, res) => {
-	getUserById();
-});
-
-router.post("/", (req, res) => {
-	try {
-		createUser(req.body);
-	} catch (error) {
-		res.status(500).json({ error });
-	}
-});
-
-router.put("/:id");
-
-router.delete("/:id");
+router.route("/:userId").get(getUserById).put(editUser).delete(deleteUser);
 
 module.exports = router;

@@ -2,52 +2,69 @@ const { User } = require("../models");
 
 const userController = {
 	getAllUsers(req, res) {
-		User.find({})
-			// .populate does nothing, need to find another way to do this
-			.populate({
-				path: "thoughts",
-				select: "-__v",
+		User.find()
+			.then(async (users) => {
+				const usersObj = {
+					users,
+				};
+				return res.json(usersObj);
 			})
-			.populate({
-				path: "friends",
-				select: "-__v",
-			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
+	getUserById(req, res) {
+		User.findOne({ _id: req.params.userId })
 			.select("-__v")
-			.sort({ _id: -1 })
-			// .then((dbUserData) => res.json(dbUserData))
-			.catch((error) => {
-				console.log(error);
-			});
-		console.log({ dbUserData });
-	},
-
-	getUserById({ params }, res) {
-		User.findOne({ _id: params.id })
-			.populate({
-				path: "thoughts",
-				select: "-__v",
-			})
-			.populate({
-				path: "friends",
-				select: "-__v",
-			})
-			.then((dbUserData) => {
-				if (!dbUserData) {
-					res.status(404).json({ message: "No User with this ID was found" });
-					return;
+			.then(async (user) => {
+				if (!user) {
+					res.status(404).json({ message: "No user with given ID" });
+				} else {
+					res.json(user);
 				}
-				res.json(dbUserData);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
 	},
 
-	createUser(body, res) {
-		console.log("inside of createUser", body);
-		User.create(body).catch((error) => {
-			console.log(error);
-		});
+	createUser(req, res) {
+		User.create(req.body)
+			.then((user) => res.json(user))
+			.catch((error) => res.status(500).json(error));
+	},
+
+	editUser(req, res) {
+		console.log(req.body);
+		User.findOneAndUpdate(
+			{ _id: req.params.userId },
+			{ $set: req.body },
+			{ runValidators: true, new: true }
+		)
+			.then(async (user) => {
+				if (!user) {
+					res.status(404).json({ message: "No user with given ID" });
+				} else {
+					res.json(user);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+	deleteUser(req, res) {
+		User.findOneAndDelete({ _id: req.params.userId })
+			.then(async (user) => {
+				if (!user) {
+					res.status(404).json({ message: "No user with given ID" });
+				} else {
+					res.json(user);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
 	},
 };
 
