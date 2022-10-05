@@ -6,8 +6,13 @@ const {
 	createUser,
 } = require("../../controller/userController");
 
-router.get("/", (req, res) => {
-	getAllUsers();
+router.get("/", async (req, res) => {
+	try {
+		// not sure if i need to pass something into the func to make it work
+		getAllUsers();
+	} catch (error) {
+		res.status(500).json({ error });
+	}
 });
 
 router.get("/:id", (req, res) => {
@@ -15,7 +20,11 @@ router.get("/:id", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-	createUser(req.body);
+	try {
+		createUser(req.body);
+	} catch (error) {
+		res.status(500).json({ error });
+	}
 });
 
 router.put("/:id");

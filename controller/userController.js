@@ -3,6 +3,7 @@ const { User } = require("../models");
 const userController = {
 	getAllUsers(req, res) {
 		User.find({})
+			// .populate does nothing, need to find another way to do this
 			.populate({
 				path: "thoughts",
 				select: "-__v",
@@ -13,9 +14,11 @@ const userController = {
 			})
 			.select("-__v")
 			.sort({ _id: -1 })
+			// .then((dbUserData) => res.json(dbUserData))
 			.catch((error) => {
 				console.log(error);
 			});
+		console.log({ dbUserData });
 	},
 
 	getUserById({ params }, res) {
@@ -42,8 +45,6 @@ const userController = {
 
 	createUser(body, res) {
 		console.log("inside of createUser", body);
-		console.log("inside of createUser (destructured)", { body });
-
 		User.create(body).catch((error) => {
 			console.log(error);
 		});
