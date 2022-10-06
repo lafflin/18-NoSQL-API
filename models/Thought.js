@@ -1,36 +1,6 @@
 const { Schema, model } = require("mongoose");
 const formattedTime = require("../utils/timeFormat");
-
-const ReactionSchema = new Schema(
-	{
-		reactionId: {
-			type: Schema.Types.ObjectId,
-			default: () => new Types.ObjectId(),
-		},
-		reactionContent: {
-			type: String,
-			required: "Must enter a reaction to the thought",
-			minlength: 1,
-			maxlength: 280,
-			trim: true,
-		},
-		username: {
-			type: String,
-			required: "You must enter a username to post a reaction",
-		},
-		createdAt: {
-			type: Date,
-			default: Date.now,
-			// double check formatting
-			get: (createdAtVal) => formattedTime(createdAtVal),
-		},
-	},
-	{
-		toJSON: {
-			getters: true,
-		},
-	}
-);
+const reactionSchema = require("./Reaction");
 
 const ThoughtSchema = new Schema(
 	{
@@ -50,15 +20,13 @@ const ThoughtSchema = new Schema(
 			type: String,
 			required: "You need a username to post a thought",
 		},
-		reactions: [ReactionSchema],
+		reactions: [reactionSchema],
 	},
 	{
 		toJSON: {
 			virtuals: true,
 			getters: true,
 		},
-
-		id: false,
 	}
 );
 

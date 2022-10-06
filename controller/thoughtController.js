@@ -1,4 +1,5 @@
-const { Thought } = require("../models");
+const { ObjectId } = require("mongoose").Types;
+const { Reaction, Thought } = require("../models");
 
 const thoughtController = {
 	getAllThoughts(req, res) {
@@ -57,6 +58,43 @@ const thoughtController = {
 
 	deleteThought(req, res) {
 		Thought.findOneAndDelete({ _id: req.params.thoughtId })
+			.then(async (thought) => {
+				if (!thought) {
+					res.status(404).json({ message: "No thought with given ID" });
+				} else {
+					res.json(thought);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
+	newReaction(req, res) {
+		console.log(req.body);
+		Thought.findOneAndUpdate(
+			{ _id: req.params.thoughtId },
+			{ $push: { reactions: req.body } },
+			{ runValidators: true, new: true }
+		)
+			.then(async (thought) => {
+				if (!thought) {
+					res.status(404).json({ message: "No thought with given ID" });
+				} else {
+					res.json(thought);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
+	deleteReaction(req, res) {
+		Thought.findOneAndUpdate(
+			{ _id: req.params.thoughtId },
+			{ $pull: { reactions: { reactionId: req.params.reactionId } } },
+			{ runValidators: true, new: true }
+		)
 			.then(async (thought) => {
 				if (!thought) {
 					res.status(404).json({ message: "No thought with given ID" });
