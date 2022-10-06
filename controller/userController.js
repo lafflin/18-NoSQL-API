@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongoose").Types;
 const { User } = require("../models");
 
 const userController = {
@@ -56,6 +57,42 @@ const userController = {
 
 	deleteUser(req, res) {
 		User.findOneAndDelete({ _id: req.params.userId })
+			.then(async (user) => {
+				if (!user) {
+					res.status(404).json({ message: "No user with given ID" });
+				} else {
+					res.json(user);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
+	newFriend(req, res) {
+		User.findOneAndUpdate(
+			{ _id: req.params.userId },
+			{ $push: { friends: req.params.friendId } },
+			{ runValidators: true, new: true }
+		)
+			.then(async (user) => {
+				if (!user) {
+					res.status(404).json({ message: "No user with given ID" });
+				} else {
+					res.json(user);
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	},
+
+	deleteFriend(req, res) {
+		User.findOneAndUpdate(
+			{ _id: req.params.userId },
+			{ $pull: { friends: req.params.friendId } },
+			{ runValidators: true, new: true }
+		)
 			.then(async (user) => {
 				if (!user) {
 					res.status(404).json({ message: "No user with given ID" });
