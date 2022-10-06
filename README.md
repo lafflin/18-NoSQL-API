@@ -50,12 +50,15 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 ### Links
 
 - Solution URL: [Solution](https://github.com/lafflin/18-NoSQL-API)
-
+- Video: [YouTube](https://www.youtube.com/watch?v=SGP1W4zjNGk)
   ​
 
 ## My process
 
 1. Firstly, I wrote out the server, connection, models, and schemas.
+2. Secondly, while working on the controllers and routing, I had requested help from the askBCS, and realized that I needed to refactor most of my code, because it was creating more issues that intended.
+3. After refactoring, I began to knock out all of the routes slowly.
+4. Finally, I made the video and finished the README.
 
 ### Built with
 
@@ -66,15 +69,15 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 ### What I learned
 
--
+- I learned a lot about MongoDB and how it works with express.
 
 ### Continued development
 
--
+- Continue to work more with MongoDB and mongoose
 
 ### Useful resources
 
--
+- The mongoDB docs were hugely helpful
 
 ## Author
 
@@ -82,4 +85,4 @@ THEN I am able to successfully create and delete reactions to thoughts and add a
 
 ## Acknowledgments
 
--
+- The LA who realized I needed to refactor my code and let me know. Saved me a huge amount of time by pointing me in the right direction.
