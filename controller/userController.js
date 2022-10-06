@@ -53,6 +53,7 @@ const userController = {
 				console.log(error);
 			});
 	},
+
 	deleteUser(req, res) {
 		User.findOneAndDelete({ _id: req.params.userId })
 			.then(async (user) => {
